@@ -1,0 +1,5 @@
+move 0 0 0
+fakecommand #this is a fake command
+move 2 4 -56
+read test.cli
+color 1 4 6

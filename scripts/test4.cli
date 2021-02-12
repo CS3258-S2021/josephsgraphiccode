@@ -1,0 +1,5 @@
+move 1 2 5
+read blankfile
+read hello world
+color 2 5 9
+draw 0 0 0
