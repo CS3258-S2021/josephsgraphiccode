@@ -1,5 +1,7 @@
 Name: Joseph Chang
+
 VUNetID: changj6
+
 VU Email: joseph.chang@vanderbilt.edu
 
 This is my CS 3258 code repository
