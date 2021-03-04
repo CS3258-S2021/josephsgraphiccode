@@ -24,6 +24,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+
+#include "CLI.h"
+#include "Command.h"
+#include "Global.h"
 
 /*	Create checkerboard image	*/
 #define    checkImageWidth 1024
@@ -31,6 +36,8 @@
 GLubyte checkImage[checkImageHeight][checkImageWidth][3];
 
 static GLint height;
+
+CLI cli;
 
 void
 makeCheckImage(void) {
@@ -188,18 +195,23 @@ main_loop(char line[], bool original, int readVersion) {
     char *tempParam;
     float numericalParam[32];
     char *stringParam[32];
+    std::string lineStr(line);
 
     /* List of Known Commands */
     char *move = "Move";
     char *draw = "Draw";
     char *color = "Color";
     char *read = "Read";
+    char *tiffread = "TiffRead";
+    char *tiffstat = "TiffStat";
+    char *tiffwrite = "TiffWrite";
 
     /* Flags for Parameters */
     int numParam = 0;
     bool validNumber = true;
     bool decimalUndetected = true;
     bool numerical = false;
+    bool validCommand = true;
 
     /* Extracting command */
     command = strtok(line, " ,\t");
@@ -219,12 +231,24 @@ main_loop(char line[], bool original, int readVersion) {
         numParam = 1;
         numerical = false;
         command = read;
-    } else if (line[0] == '\0') {
-        printf("No command was given\n");
-        printf("Exiting...\n");
-        exit(0);
+    } else if (stricmp(command, tiffread) == 0) {
+        numParam = 1;
+        numerical = false;
+        command = tiffread;
+    } else if (stricmp(command, tiffwrite) == 0) {
+        numParam = 5;
+        numerical = false;
+        command = tiffwrite;
+    } else if (stricmp(command, tiffstat) == 0) {
+        numParam = 1;
+        numerical = false;
+        command = tiffstat;
     } else {
+        validCommand = false;
         printf("The given command is unknown\n");
+    }
+
+    if (line == nullptr) {
         printf("Exiting...\n");
         exit(0);
     }
@@ -232,8 +256,8 @@ main_loop(char line[], bool original, int readVersion) {
     /* Processing a Read Command */
     if (command == read) {
         ++readVersion;
-        char* returnLine;
-        char* fileName = strtok(nullptr, " ,");
+        char returnLine[1024];
+        char *fileName = strtok(nullptr, " ,");
 
         /* First Level of Read Commands */
         if (readVersion == 1) {
@@ -259,7 +283,7 @@ main_loop(char line[], bool original, int readVersion) {
             } else {
                 getline(file2, myLine);
                 while (file2) {
-                    char* secondPointer = new char[myLine.size() + 1];
+                    char *secondPointer = new char[myLine.size() + 1];
                     std::copy(myLine.begin(), myLine.end(), secondPointer);
                     secondPointer[myLine.size()] = '\0';
                     main_loop(secondPointer, false, 2);
@@ -278,7 +302,7 @@ main_loop(char line[], bool original, int readVersion) {
             } else {
                 getline(file3, myLine);
                 while (file3) {
-                    char* thirdPointer = new char[myLine.size() + 1];
+                    char *thirdPointer = new char[myLine.size() + 1];
                     std::copy(myLine.begin(), myLine.end(), thirdPointer);
                     thirdPointer[myLine.size()] = '\0';
                     main_loop(thirdPointer, false, 3);
@@ -297,7 +321,7 @@ main_loop(char line[], bool original, int readVersion) {
             } else {
                 getline(file4, myLine);
                 while (file4) {
-                    char* fourthPointer = new char[myLine.size() + 1];
+                    char *fourthPointer = new char[myLine.size() + 1];
                     std::copy(myLine.begin(), myLine.end(), fourthPointer);
                     fourthPointer[myLine.size()] = '\0';
                     main_loop(fourthPointer, false, 4);
@@ -316,7 +340,7 @@ main_loop(char line[], bool original, int readVersion) {
             } else {
                 getline(file5, fifthLine);
                 while (file5) {
-                    char* fifthPointer = new char[fifthLine.size() + 1];
+                    char *fifthPointer = new char[fifthLine.size() + 1];
                     std::copy(fifthLine.begin(), fifthLine.end(), fifthPointer);
                     fifthPointer[fifthLine.size()] = '\0';
                     main_loop(fifthPointer, false, 5);
@@ -346,57 +370,61 @@ main_loop(char line[], bool original, int readVersion) {
             printf("The limit in the number of nested files (6) has been reached\n");
             return;
         }
-    } else {
-        /* Processing a Non-Read Command */
-        printf("In %s: ", command);
-        for (int i = 0; i < numParam; ++i) {
-            tempParam = strtok(nullptr, " ,");
-            if (!numerical) {
-                stringParam[i] = tempParam;
-            } else {
-                if (tempParam == nullptr) {
-                    numericalParam[i] = 0;
-                } else if (tempParam[0] == '#') {
-                    for (int j = i; i < numParam; ++i) {
-                        numericalParam[j] = 0;
-                    }
-                    break;
+    } else if ((command == draw) || (command == color) || (command == move)) {
+            /* Processing a Non-Read Command */
+            printf("In %s: ", command);
+            for (int i = 0; i < numParam; ++i) {
+                tempParam = strtok(nullptr, " ,");
+                if (!numerical) {
+                    stringParam[i] = tempParam;
                 } else {
-                    for (int j = 0; j < (int) strlen(tempParam); ++j) {
-                        if (j == 0 && tempParam[j] == '-') {}
-                        else if (decimalUndetected && tempParam[j] == '.') {
-                            decimalUndetected = false;
-                        } else if (!isdigit(tempParam[j]) || tempParam[j] == '.') {
-                            validNumber = false;
+                    if (tempParam == nullptr) {
+                        numericalParam[i] = 0;
+                    } else if (tempParam[0] == '#') {
+                        for (int j = i; i < numParam; ++i) {
+                            numericalParam[j] = 0;
                         }
-                    }
-                    if (validNumber) {
-                        numericalParam[i] = strtof(tempParam, nullptr);\
-                        decimalUndetected = true;
+                        break;
                     } else {
-                        printf("Error: Invalid Parameters\n");
-                        return;
+                        for (int j = 0; j < (int) strlen(tempParam); ++j) {
+                            if (j == 0 && tempParam[j] == '-') {}
+                            else if (decimalUndetected && tempParam[j] == '.') {
+                                decimalUndetected = false;
+                            } else if (!isdigit(tempParam[j]) || tempParam[j] == '.') {
+                                validNumber = false;
+                            }
+                        }
+                        if (validNumber) {
+                            numericalParam[i] = strtof(tempParam, nullptr);\
+                        decimalUndetected = true;
+                        } else {
+                            printf("Error: Invalid Parameters\n");
+                            return;
+                        }
                     }
                 }
             }
-        }
 
-        /* Printing Parameter Format */
-        for (int i = 0; i < numParam; ++i) {
-            if (numerical) {
-                printf("Parameter #%d: %f\t", i + 1, numericalParam[i]);
-            } else {
-                printf("Parameter #%d: %s\t", i + 1, stringParam[i]);
+            /* Printing Parameter Format */
+            for (int i = 0; i < numParam; ++i) {
+                if (numerical) {
+                    printf("Parameter #%d: %f\t", i + 1, numericalParam[i]);
+                } else {
+                    printf("Parameter #%d: %s\t", i + 1, stringParam[i]);
+                }
             }
+            printf("\n");
+    } else {
+        if (cli.isCommand(lineStr)) {
+            Command* com = cli.parseCommand(lineStr, false);
+            if (com != nullptr) {
+                com->execute();
+                glFlush();
+            }
+            delete com;
         }
-        printf("\n");
     }
 
-
-    if (line == nullptr) {
-        printf("Exiting...\n");
-        exit(0);
-    }
 
     if (original) {
         printf("CLI> ");
