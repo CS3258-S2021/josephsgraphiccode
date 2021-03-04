@@ -1,0 +1,5 @@
+move 1 2 4
+tiffread eeeyore.tif
+tiffread ../images/eeyore.tif
+tiffstat ../images/eeyore.tif
+tiffwrite ../images/newPicture.tif 0 0 100 100
