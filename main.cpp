@@ -25,7 +25,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
-
+#include <stdlib.h>
+#include <stdio.h>
 #include "CLI.h"
 #include "Command.h"
 #include "Global.h"
@@ -205,6 +206,8 @@ main_loop(char line[], bool original, int readVersion) {
     char *tiffread = "TiffRead";
     char *tiffstat = "TiffStat";
     char *tiffwrite = "TiffWrite";
+    char *resize = "Resize";
+    char *zoom = "Zoom";
 
     /* Flags for Parameters */
     int numParam = 0;
@@ -243,6 +246,14 @@ main_loop(char line[], bool original, int readVersion) {
         numParam = 1;
         numerical = false;
         command = tiffstat;
+    } else if (stricmp(command, resize) == 0) {
+        numParam = 2;
+        numerical = false;
+        command = resize;
+    } else if (stricmp(command, zoom) == 0) {
+        numParam = 1;
+        numerical = false;
+        command = zoom;
     } else {
         validCommand = false;
         printf("The given command is unknown\n");
