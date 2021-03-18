@@ -1,0 +1,1 @@
+For assignment 3, I implemented the negative scale factors for the resize command, which made it possible to invert the image in either the horizontal or vertal axis by giving either of the two axis negative scale values. 

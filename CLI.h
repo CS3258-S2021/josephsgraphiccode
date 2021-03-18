@@ -6,17 +6,18 @@
 #include "Command.h"
 #include "Tokenizer.h"
 #include "TiffImageData.h"
+#include "Filter.h"
 
 class CLI {
 public:
     // Constructor
-    CLI(): hasImage(false), imageData(), totalReads(0), MAX_READS(1000) {}
+    CLI(): hasImage(false), imageData(), filter(), totalReads(0), MAX_READS(1000) {}
 
     /*
      * method: isCommand
      * return: whether line begins with commen character or not
      */
-    bool isCommand(std::string& line);
+    static bool isCommand(std::string& line);
 
     /*
      * method: parseCommand
@@ -29,12 +30,13 @@ public:
 
     bool hasImage;
     TiffImageData imageData;
+    Filter filter;
 private:
     /*
      * method: tolower
      * return: token in lower case
      */
-    void tolower(std::string& token);
+    static void tolower(std::string& token);
     // used to parse input strings
     Tokenizer tokenizer;
     // path to append to filenames within directories

@@ -6,6 +6,7 @@
 #include "TiffStatCommand.h"
 #include "TiffReadCommand.h"
 #include "TiffWriteCommand.h"
+#include "ResizeCommand.h"
 
 bool CLI::isCommand(std::string &line) {
     return line.length() > 0 && line[0] != '#';
@@ -18,7 +19,7 @@ void CLI::tolower(std::string &token) {
 }
 
 Command *CLI::parseCommand(std::string &line, bool inFile) {
-    std::string commands[] = {"tiffread", "tiffstat", "tiffwrite"};
+    std::string commands[] = {"tiffread", "tiffstat", "tiffwrite", "resize", "zoom", "border", "select"};
     std::vector<std::string> tokens = tokenizer.tokenize(line, ", \t");
     std::string name = tokens[0];
     tolower(name);
@@ -129,6 +130,54 @@ Command *CLI::parseCommand(std::string &line, bool inFile) {
         } else {
             std::cout
                     << "Error: Not enough parameters for tiffwrite" << std::endl;
+            return nullptr;
+        }
+    } else if (name == "resize") {
+        std::vector<double> params;
+        for (size_t i = 1; i < 3; ++i) {
+            double num = 1;
+            if (i < tokens.size()) {
+                std::string token = tokens[i];
+                if (token != "") {
+                    try {
+                        num = std::stod(token);
+                    } catch (const std::invalid_argument &e) {
+                        std::cout << "Error: invalid parameter " << token << " in line \"" << line << "\"" << std::endl;
+                        return nullptr;
+                    } catch (const std::out_of_range &e) {
+                        std::cout << "Error: parameter " << token << " out of range in line \"" << line << "\""
+                                  << std::endl;
+                        return nullptr;
+                    }
+                }
+            }
+            params.push_back(num);
+        }
+        if (tokens.size() > 3) {
+            std::cout << "5Warning: too many parameters" << std::endl;
+        }
+
+        return new ResizeCommand(params, *this);
+    } else if (name == "zoom") {
+        if (tokens.size() > 1) {
+            std::string token = tokens[1];
+            double num = 1;
+            try {
+                num = std::stod(token);
+            } catch (const std::invalid_argument &e) {
+                std::cout << "Error: invalid parameter " << token << " in line \"" << line << "\"" << std::endl;
+                return nullptr;
+            } catch (const std::out_of_range &e) {
+                std::cout << "Error: parameter " << token << " out of range in line \"" << line << "\""
+                          << std::endl;
+                return nullptr;
+            }
+            if (tokens.size() > 2) {
+                std::cout << "Warning: too many parameters" << std::endl;
+            }
+            return new ResizeCommand(num, *this);
+        } else {
+            std::cout << "Error: Please provide a scale in line \"" << line << "\"" << std::endl;
             return nullptr;
         }
     }
