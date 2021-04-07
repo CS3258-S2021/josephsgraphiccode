@@ -17,8 +17,8 @@ void OrthoCommand::execute() {
         cli.orthMatrix = orthoMatrix;
         cli.orthFlag = true;
         cli.perspFlag = false;
-        cli.near = n;
-        cli.far = f;
+        cli.nearer = n;
+        cli.farther = f;
     }
 }
 

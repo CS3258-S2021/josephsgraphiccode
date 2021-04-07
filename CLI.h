@@ -14,7 +14,7 @@ class CLI {
 public:
     // Constructor
     CLI(): hasImage(false), imageData(), filter(), perspFlag(false), orthFlag(false),
-            near(0), far(0), perspMatrix(), orthMatrix(), currentMatrix(), stack(),
+            nearer(0), farther(0), perspMatrix(), orthMatrix(), currentMatrix(), stack(),
             printFlag(0), savemat(), totalReads(0), MAX_READS(1000) {}
 
     /*
@@ -37,8 +37,7 @@ public:
     Filter filter;
 
     bool perspFlag, orthFlag;
-    double near = 0;
-    double far = 0;
+    double nearer, farther;
     Matrix44 perspMatrix, orthMatrix;
     Matrix44 currentMatrix;
     std::vector<Matrix44> stack;

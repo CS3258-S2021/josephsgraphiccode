@@ -20,8 +20,8 @@ void PerspectiveCommand::execute() {
         cli.perspMatrix = perspectiveMatrix;
         cli.orthFlag = false;
         cli.perspFlag = true;
-        cli.near = n;
-        cli.far = f;
+        cli.nearer = n;
+        cli.farther = f;
     }
 }
 

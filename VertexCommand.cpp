@@ -2,6 +2,7 @@
 #include "Matrix44.h"
 #include "Global.h"
 #include "Matrix44.h"
+#include "3D.c"
 
 #include <iostream>
 #include <cmath>
@@ -24,12 +25,12 @@ void VertexCommand::execute() {
     Vector4 tmp = cli.currentMatrix * printvec;
     tmp[3] = 1;
 
-    cli.printflag++;       /* increase counter */
+    cli.printFlag++;       /* increase counter */
 
-    if(cli.printflag==1) { /* if the first vertex, save the points */
+    if(cli.printFlag==1) { /* if the first vertex, save the points */
         cli.savemat = tmp;
     }
-    if(cli.printflag==2) { /* if the second vertex, test clipping */
+    if(cli.printFlag==2) { /* if the second vertex, test clipping */
         x1=(float)tmp[0];
         y1=(float)tmp[1];
         z1=(float)tmp[2];
@@ -40,7 +41,7 @@ void VertexCommand::execute() {
 
         /* if clipping occurs and points are within view volume, draw line */
         /* from v1 to v2 */
-        if(near_far_clip((float)cli.near, (float)cli.far, &x0, &y0, &z0, &x1, &y1, &z1) == 1) {
+        if(near_far_clip((float)cli.nearer, (float)cli.farther, &x0, &y0, &z0, &x1, &y1, &z1) == 1) {
             Vector4 pvert1(x0, y0, z0, 1);
             Vector4 pvert2(x1, y1, z1, 1);
 
@@ -58,7 +59,7 @@ void VertexCommand::execute() {
 
                 //draw_line(0, 0, 200, 200);
 
-                cli.printflag=0;
+                cli.printFlag=0;
             }
             else if (cli.perspFlag && !cli.orthFlag){   /* if a perspective projection, use persp */
                 /* divide by abs(z) to account for */
@@ -82,14 +83,14 @@ void VertexCommand::execute() {
                           (float)vertex2[1], cli);
 
 
-                cli.printflag = 0; /* set counter=0 to look for another set of vertices */
+                cli.printFlag = 0; /* set counter=0 to look for another set of vertices */
             } else {
                 std::cout << "Must set either perspective or ortho before drawing" << std::endl;
             }
         }
 
         else
-            cli.printflag = 0;  /* if vertices beyond clipping plane, reset counter */
+            cli.printFlag = 0;  /* if vertices beyond clipping plane, reset counter */
 
     }
 }

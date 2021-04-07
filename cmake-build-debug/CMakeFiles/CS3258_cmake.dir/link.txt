@@ -1,3 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2019.2.1\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\CS3258_cmake.dir/objects.a
-C:\msys64\mingw64\bin\ar.exe cr CMakeFiles\CS3258_cmake.dir/objects.a @CMakeFiles\CS3258_cmake.dir\objects1.rsp
-C:\msys64\mingw64\bin\g++.exe  -Wall -DGL_SILENCE_DEPRECATION -g   -Wl,--whole-archive CMakeFiles\CS3258_cmake.dir/objects.a -Wl,--no-whole-archive  -o CS3258_cmake.exe -Wl,--out-implib,libCS3258_cmake.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\CS3258_cmake.dir\linklibs.rsp

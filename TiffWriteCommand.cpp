@@ -194,7 +194,7 @@ void TiffWriteCommand::execute() {
             imfile.write((char *)&nextifd, 4);
 
             imfile.close();
-        } catch (std::exception ex) {
+        } catch (std::exception& ex) {
             std::cout << "Error: could not complete file write" << std::endl;
             imfile.close();
             return;
