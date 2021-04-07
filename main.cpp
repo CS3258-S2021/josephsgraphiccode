@@ -208,6 +208,16 @@ main_loop(char line[], bool original, int readVersion) {
     char *tiffwrite = "TiffWrite";
     char *resize = "Resize";
     char *zoom = "Zoom";
+    char *push = "Push";
+    char *pop = "Pop";
+    char *translate = "Translate";
+    char *scale = "Scale";
+    char *rotate = "Rotate";
+    char *ortho = "Ortho";
+    char *perspective = "Perspective";
+    char *lookat = "Lookat";
+    char *vertex = "Vertex";
+    char *reset = "Reset";
 
     /* Flags for Parameters */
     int numParam = 0;
@@ -254,6 +264,46 @@ main_loop(char line[], bool original, int readVersion) {
         numParam = 1;
         numerical = false;
         command = zoom;
+    }else if (stricmp(command, push) == 0) {
+        numParam = 0;
+        numerical = false;
+        command = push;
+    } else if (stricmp(command, pop) == 0) {
+        numParam = 0;
+        numerical = false;
+        command = pop;
+    } else if (stricmp(command, translate) == 0) {
+        numParam = 3;
+        numerical = false;
+        command = translate;
+    } else if (stricmp(command, scale) == 0) {
+        numParam = 3;
+        numerical = false;
+        command = scale;
+    } else if (stricmp(command, rotate) == 0) {
+        numParam = 4;
+        numerical = false;
+        command = rotate;
+    } else if (stricmp(command, ortho) == 0) {
+        numParam = 6;
+        numerical = false;
+        command = ortho;
+    } else if (stricmp(command, perspective) == 0) {
+        numParam = 4;
+        numerical = false;
+        command = perspective;
+    } else if (stricmp(command, lookat) == 0) {
+        numParam = 9;
+        numerical = false;
+        command = lookat;
+    } else if (stricmp(command, vertex) == 0) {
+        numParam = 3;
+        numerical = false;
+        command = vertex;
+    } else if (stricmp(command, reset) == 0) {
+        numParam = 0;
+        numerical = false;
+        command = reset;
     } else {
         validCommand = false;
         printf("The given command is unknown\n");
