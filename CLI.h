@@ -7,15 +7,19 @@
 #include "Tokenizer.h"
 #include "TiffImageData.h"
 #include "Filter.h"
+#include "Matrix44.h"
+#include "Vector4.h"
 
 class CLI {
 public:
     // Constructor
-    CLI(): hasImage(false), imageData(), filter(), totalReads(0), MAX_READS(1000) {}
+    CLI(): hasImage(false), imageData(), filter(), perspFlag(false), orthFlag(false),
+            near(0), far(0), perspMatrix(), orthMatrix(), currentMatrix(), stack(),
+            printFlag(0), savemat(), totalReads(0), MAX_READS(1000) {}
 
     /*
      * method: isCommand
-     * return: whether line begins with commen character or not
+     * return: whether line begins with common character or not
      */
     static bool isCommand(std::string& line);
 
@@ -31,6 +35,15 @@ public:
     bool hasImage;
     TiffImageData imageData;
     Filter filter;
+
+    bool perspFlag, orthFlag;
+    double near = 0;
+    double far = 0;
+    Matrix44 perspMatrix, orthMatrix;
+    Matrix44 currentMatrix;
+    std::vector<Matrix44> stack;
+    int printFlag;
+    Vector4 savemat;
 private:
     /*
      * method: tolower
