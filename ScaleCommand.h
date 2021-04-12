@@ -9,7 +9,7 @@ public:
     ScaleCommand(double xIn, double yIn, double zIn, CLI& mainCLI);
     virtual void execute();
     virtual std::string toString() const;
-    virtual ~ScaleCommand();
+    virtual ~ScaleCommand() {};
 
 private:
     std::string name;

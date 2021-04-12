@@ -1,8 +1,6 @@
 #include "VertexCommand.h"
 #include "Matrix44.h"
 #include "Global.h"
-#include "Matrix44.h"
-#include "3D.c"
 
 #include <iostream>
 #include <cmath>

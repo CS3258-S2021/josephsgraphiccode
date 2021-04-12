@@ -9,7 +9,7 @@ public:
     PushCommand(CLI& mainCLI);
     virtual void execute();
     virtual std::string toString() const;
-    virtual ~PushCommand();
+    virtual ~PushCommand() {};
 
 private:
     std::string name;

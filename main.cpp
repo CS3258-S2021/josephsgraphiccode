@@ -54,6 +54,18 @@ makeCheckImage(void) {
     }
 }
 
+void makeBlackImage() {
+    int i, j;
+
+    for (i = 0; i < checkImageHeight; i++) {
+        for (j = 0; j < checkImageWidth; j++) {
+            checkImage[i][j][0] = (GLubyte) 0;
+            checkImage[i][j][1] = (GLubyte) 0;
+            checkImage[i][j][2] = (GLubyte) 0;
+        }
+    }
+}
+
 /*
  * Function name: init
  * Description:   Operations that only need be performed once for rendering
