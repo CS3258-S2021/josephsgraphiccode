@@ -230,6 +230,16 @@ main_loop(char line[], bool original, int readVersion) {
     char *lookat = "Lookat";
     char *vertex = "Vertex";
     char *reset = "Reset";
+    char *screen = "Screen";
+    char *orthocamera = "Orthcamera";
+    char *camera = "Camera";
+    char *background = "Background";
+    char *sphere = "Sphere";
+    char *triangle = "Triangle";
+    char *box = "Box";
+    char *light = "Ilight";
+    char *clear = "Clear";
+    char *trace = "Trace";
 
     /* Flags for Parameters */
     int numParam = 0;
@@ -316,6 +326,46 @@ main_loop(char line[], bool original, int readVersion) {
         numParam = 0;
         numerical = false;
         command = reset;
+    } else if (stricmp(command, screen) == 0) {
+        numParam = 2;
+        numerical = false;
+        command = screen;
+    } else if (stricmp(command, orthocamera) == 0) {
+        numParam = 0;
+        numerical = false;
+        command = orthocamera;
+    } else if (stricmp(command, camera) == 0) {
+        numParam = 14;
+        numerical = false;
+        command = camera;
+    } else if (stricmp(command, background) == 0) {
+        numParam = 3;
+        numerical = false;
+        command = background;
+    } else if (stricmp(command, sphere) == 0) {
+        numParam = 13;
+        numerical = false;
+        command = sphere;
+    } else if (stricmp(command, triangle) == 0) {
+        numParam = 15;
+        numerical = false;
+        command = triangle;
+    } else if (stricmp(command, box) == 0) {
+        numParam = 12;
+        numerical = false;
+        command = box;
+    } else if (stricmp(command, light) == 0) {
+        numParam = 6;
+        numerical = false;
+        command = light;
+    } else if (stricmp(command, clear) == 0) {
+        numParam = 0;
+        numerical = false;
+        command = clear;
+    } else if (stricmp(command, trace) == 0) {
+        numParam = 0;
+        numerical = false;
+        command = trace;
     } else {
         validCommand = false;
         printf("The given command is unknown\n");

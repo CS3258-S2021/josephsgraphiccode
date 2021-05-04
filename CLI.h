@@ -9,13 +9,18 @@
 #include "Filter.h"
 #include "Matrix44.h"
 #include "Vector4.h"
+#include "Camera.h"
+#include "Light.h"
+#include "Shape.h"
+
+#include <vector>
 
 class CLI {
 public:
     // Constructor
     CLI(): hasImage(false), imageData(), filter(), perspFlag(false), orthFlag(false),
             nearer(0), farther(0), perspMatrix(), orthMatrix(), currentMatrix(), stack(),
-            printFlag(0), savemat(), totalReads(0), MAX_READS(1000) {}
+            printFlag(0), savemat(), width(512), height(512), cam(nullptr), background(0, 0, 0), lights(), shapes(), tokenizer(), prefix(""), totalReads(0), MAX_READS(1000) {}
 
     /*
      * method: isCommand
@@ -43,6 +48,12 @@ public:
     std::vector<Matrix44> stack;
     int printFlag;
     Vector4 savemat;
+
+    double width, height;
+    Camera* cam;
+    Vector3 background;
+    std::vector<Light> lights;
+    std::vector<Shape*> shapes;
 private:
     /*
      * method: tolower
