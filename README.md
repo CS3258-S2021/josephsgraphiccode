@@ -12,3 +12,7 @@ Assignment #1:
   If there was a non-read command, the three parameters would be checked to see if they were valid parameters. If not all parameters were supplied, the missing parameters would be defaulted to the zero value. If the parameters given were characters when the parameters were supposed to be numerical, an error was shown. Comments were also ignored.
   
   To run the program, the program must be compiled and built. Once complete, there are 4 test files in the scripts folder. These tests are to be copied to the executable file. Once the program runs, if will promp the user for a command. "Read (test-file)" will run the program using the test file chosen.
+
+Assignment $5:
+  For this assignment, the rendering of the script for this project, which is called project5test.cli in the script folder, took 717 milliseconds to render.
+  The tiff image corresponding to the script is reflect.tiff, which is in the images folder.
