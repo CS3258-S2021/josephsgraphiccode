@@ -1,5 +1,6 @@
 # CS3258 Intro to Graphics Project
 Author: Joseph Chang
+
 Purpose: A command line interface for manipulating TIFF images and rendering basic shapes to the screen
 
 # Compilation Instructions
@@ -9,6 +10,7 @@ Purpose: A command line interface for manipulating TIFF images and rendering bas
 
 # Manual
 Note: Brackets specify parameters and should not be included when actually performing the command.
+
 Note: BE sure to only have 1 delimiter (comma, space) between each argument. Consecutive delimiters with no arguments in between will be interpreted as a 0 argument.
 
 ## Dummy Commands
